@@ -10,8 +10,10 @@
 		var accessToken = "e749fbd5eb6844668b99776f93862615";
 		var baseUrl = "https://api.api.ai/v1/";
 		$(document).ready(function() {
-			initialSend();
+			//initialSend();
 			
+			var respuesta = todaydate();
+			setResponse(respuesta);
 			
 			$("#input").keypress(function(event) {
 				if (event.which == 13) {
