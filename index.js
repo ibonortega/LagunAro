@@ -296,7 +296,7 @@ function validateEmail(email) {
   }
 }
 
-var url = "localhost:8080/calculadora/services/Calculator.asmx";
+var url = "localhost:8080/calculadora/services/Calculator.asmx?wsdl";
 $.ajax({
     type: "POST",
     url: url + "/add",
@@ -308,11 +308,11 @@ $.ajax({
 });
 
 function OnSuccessCall(response) {
-    alert(response.d);
+    alert("Success: "+response.d);
 }
 
 function OnErrorCall(response) {
-    alert(response.status + " " + response.statusText);
+    alert("Error: "+response.status + " " + response.statusText);
 }
 
 
