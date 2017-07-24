@@ -81,6 +81,9 @@ function userSend(text) {
         },
         data: JSON.stringify({ query: text, lang: "en", sessionId: "somerandomthing" }),
         success: function(data) {
+          if(data.result.action == 'SaveAddressData'){
+            adminSend('---HE CAMBIADO LA DIRECCION---');
+          }
           adminSend(data.result.fulfillment.speech);
 
         },
