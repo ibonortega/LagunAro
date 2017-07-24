@@ -296,10 +296,10 @@ function validateEmail(email) {
   }
 }
 
-var url = "localhost:8080/calculadora/services/Calculator.asmx?wsdl";
+var url = "localhost:8080/calculadora.asmx";
 $.ajax({
     type: "POST",
-    url: url + "/add",
+    url: url + "services/Calculator/add",
     data: "{x:'1',y:'2'}",
     contentType: "application/json; charset=utf-8",
     dataType: "json",
