@@ -81,6 +81,9 @@ function userSend(text) {
         },
         data: JSON.stringify({ query: text, lang: "en", sessionId: "somerandomthing" }),
         success: function(data) {
+          if(data.result.action == 'SaveAddressData'){
+            adminSend('---HE CAMBIADO LA DIRECCION---');
+          }
           adminSend(data.result.fulfillment.speech);
 
         },
@@ -242,7 +245,7 @@ function createUsername() {
   $('#chat_send_email').attr('id', 'chat_send_username');
   $('#chat_log_email').attr('id', 'chat_log_username');
   $('#chat_send_username').click(function(e) {
-    var username = $('#chat_log_username').val();
+   var username = $('#chat_log_username').val();
     if (jQuery.trim(username) !== '') {
       loadBeat(true);
       if (checkUsername(username)) {

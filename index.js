@@ -236,7 +236,7 @@ function logUser() {
     }
   });
 }
-var username="";
+
 function createUsername() {
   loadBeat(false);
   $('#chat_log_email').val('');
@@ -245,7 +245,7 @@ function createUsername() {
   $('#chat_send_email').attr('id', 'chat_send_username');
   $('#chat_log_email').attr('id', 'chat_log_username');
   $('#chat_send_username').click(function(e) {
-   username = $('#chat_log_username').val();
+   var username = $('#chat_log_username').val();
     if (jQuery.trim(username) !== '') {
       loadBeat(true);
       if (checkUsername(username)) {
