@@ -39,9 +39,9 @@ function toggleFab() {
 }
 
 //Initial Send with start values
-function initialSend() 
+function initialSend(username) 
 {
-  var text ="Me llamo Ibon";
+  var text ="Me llamo " + username;
   $.ajax({
     type: "POST",
     url: baseUrl + "query?v=20150910",
@@ -252,7 +252,7 @@ function createUsername() {
         //save username in DB and session
         createCookie('fab_chat_username', username, 100);
         hideChat(false);
-        initialSend();
+        initialSend(username);
       }
     } else {
       $('.chat_login_alert').html('Please provide username.');
