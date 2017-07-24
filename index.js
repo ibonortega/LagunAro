@@ -296,25 +296,6 @@ function validateEmail(email) {
   }
 }
 
-var url = "localhost:8080/calculadora.asmx";
-$.ajax({
-    type: "POST",
-    url: url + "services/Calculator/add",
-    data: "{x:'1',y:'2'}",
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    success: OnSuccessCall,
-    error: OnErrorCall
-});
-
-function OnSuccessCall(response) {
-    alert("Success: "+response.d);
-}
-
-function OnErrorCall(response) {
-    alert("Error: "+response.status + " " + response.statusText);
-}
-
 
 if (readCookie('fab_chat_username') === null || readCookie('fab_chat_email') === null) {
   logUser();
