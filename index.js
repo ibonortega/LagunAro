@@ -5,19 +5,113 @@ var baseUrl = "https://api.api.ai/v1/";
 //define chat color
 if (typeof(Storage) !== "undefined") {
   if (localStorage.getItem('fab-color') === null) {
-    localStorage.setItem("fab-color", "blue");
+    localStorage.setItem("fab-color", "purple");
   }
   $('.fabs').addClass(localStorage.getItem("fab-color"));
 } else {
-  $('.fabs').addClass("blue");
+  $('.fabs').addClass("purple");
 }
+localStorage.setItem("fab-color", "purple");
 
 //Fab click
+
 $('#prime').click(function() {
   toggleFab();
 });
 
+//Send input using enter and send key
+$('#chatSend').bind("enterChat", function(e) {
+  userSend($('#chatSend').val());
+  //adminSend('How may I help you.');
+});
+$('#fab_send').bind("enterChat", function(e) {
+  userSend($('#chatSend').val());
+  //adminSend('How may I help you.');
+});
+$('#chatSend').keypress(function(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    if (jQuery.trim($('#chatSend').val()) !== '') {
+      $(this).trigger("enterChat");
+    }
+  }
+});
 
+$('#fab_send').click(function(e) {
+  if (jQuery.trim($('#chatSend').val()) !== '') {
+    $(this).trigger("enterChat");
+  }
+});
+
+//Listen user voice
+$('#fab_listen').click(function() {
+  var recognition = new webkitSpeechRecognition();
+  recognition.onresult = function(event) {
+    userSend(event.results[0][0].transcript);
+  }
+  recognition.start();
+});
+
+// Color options
+$(".chat_color").click(function(e) {
+  $('.fabs').removeClass(localStorage.getItem("fab-color"));
+  $('.fabs').addClass($(this).attr('color'));
+  localStorage.setItem("fab-color", $(this).attr('color'));
+});
+
+$('.chat_option').click(function(e) {
+  $(this).toggleClass('is-dropped');
+});
+
+// Ripple effect
+var target, ink, d, x, y;
+$(".fab").click(function(e) {
+  target = $(this);
+  //create .ink element if it doesn't exist
+  if (target.find(".ink").length == 0)
+    target.prepend("<span class='ink'></span>");
+
+  ink = target.find(".ink");
+  //incase of quick double clicks stop the previous animation
+  ink.removeClass("animate");
+
+  //set size of .ink
+  if (!ink.height() && !ink.width()) {
+    //use parent's width or height whichever is larger for the diameter to make a circle which can cover the entire element.
+    d = Math.max(target.outerWidth(), target.outerHeight());
+    ink.css({
+      height: d,
+      width: d
+    });
+  }
+
+  //get click coordinates
+  //logic = click coordinates relative to page - parent's position relative to page - half of self height/width to make it controllable from the center;
+  x = e.pageX - target.offset().left - ink.width() / 2;
+  y = e.pageY - target.offset().top - ink.height() / 2;
+
+  //set the position and add class .animate
+  ink.css({
+    top: y + 'px',
+    left: x + 'px'
+  }).addClass("animate");
+});
+
+
+if (readCookie('fab_chat_username') === null || readCookie('fab_chat_email') === null) {
+  logUser();
+} else {
+  hideChat(false);
+}
+
+
+
+
+////////////////////////////////
+////////////////////////////////
+////////// FUNCIONES  //////////
+////////////////////////////////
+////////////////////////////////
 
 //Speak admin msg
 function botSpeak(text) {
@@ -37,7 +131,6 @@ function toggleFab() {
   $('.fab').toggleClass('is-visible');
   
 }
-
 //Initial Send with start values
 function initialSend(username) 
 {
@@ -104,88 +197,10 @@ function adminSend(text) {
   $('.chat_converse').scrollTop($('.chat_converse')[0].scrollHeight);
 }
 
-//Send input using enter and send key
-$('#chatSend').bind("enterChat", function(e) {
-  userSend($('#chatSend').val());
-  //adminSend('How may I help you.');
-});
-$('#fab_send').bind("enterChat", function(e) {
-  userSend($('#chatSend').val());
-  //adminSend('How may I help you.');
-});
-$('#chatSend').keypress(function(event) {
-  if (event.keyCode === 13) {
-    event.preventDefault();
-    if (jQuery.trim($('#chatSend').val()) !== '') {
-      $(this).trigger("enterChat");
-    }
-  }
-});
-
-$('#fab_send').click(function(e) {
-  if (jQuery.trim($('#chatSend').val()) !== '') {
-    $(this).trigger("enterChat");
-  }
-});
-
-//Listen user voice
-$('#fab_listen').click(function() {
-  var recognition = new webkitSpeechRecognition();
-  recognition.onresult = function(event) {
-    userSend(event.results[0][0].transcript);
-  }
-  recognition.start();
-});
-
-// Color options
-$(".chat_color").click(function(e) {
-  $('.fabs').removeClass(localStorage.getItem("fab-color"));
-  $('.fabs').addClass($(this).attr('color'));
-  localStorage.setItem("fab-color", $(this).attr('color'));
-});
-
-$('.chat_option').click(function(e) {
-  $(this).toggleClass('is-dropped');
-});
-
 //Loader effect
 function loadBeat(beat) {
   beat ? $('.chat_loader').addClass('is-loading') : $('.chat_loader').removeClass('is-loading');
 }
-
-// Ripple effect
-var target, ink, d, x, y;
-$(".fab").click(function(e) {
-  target = $(this);
-  //create .ink element if it doesn't exist
-  if (target.find(".ink").length == 0)
-    target.prepend("<span class='ink'></span>");
-
-  ink = target.find(".ink");
-  //incase of quick double clicks stop the previous animation
-  ink.removeClass("animate");
-
-  //set size of .ink
-  if (!ink.height() && !ink.width()) {
-    //use parent's width or height whichever is larger for the diameter to make a circle which can cover the entire element.
-    d = Math.max(target.outerWidth(), target.outerHeight());
-    ink.css({
-      height: d,
-      width: d
-    });
-  }
-
-  //get click coordinates
-  //logic = click coordinates relative to page - parent's position relative to page - half of self height/width to make it controllable from the center;
-  x = e.pageX - target.offset().left - ink.width() / 2;
-  y = e.pageY - target.offset().top - ink.height() / 2;
-
-  //set the position and add class .animate
-  ink.css({
-    top: y + 'px',
-    left: x + 'px'
-  }).addClass("animate");
-});
 
 //Cookies handler
 function createCookie(name, value, days) {
@@ -294,12 +309,4 @@ function validateEmail(email) {
   } else {
     return true;
   }
-}
-
-
-if (readCookie('fab_chat_username') === null || readCookie('fab_chat_email') === null) {
-  logUser();
-
-} else {
-  hideChat(false);
 }
